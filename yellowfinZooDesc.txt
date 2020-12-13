@@ -1,0 +1,20 @@
+The next step we do is a small programming exercise. I have attached an html file to this email. All it contains are some divs, several links and some functions to help setup the task. At the moment the onclick events on these links call functions with (mostly) empty bodies. The exercises involve implementing bodies for these functions.
+
+As a general overview of what the code does at present, when the page is loaded a list of animals with random names, zoos and costs is generated. This list is stored in a global array called "animals". The list is then loaded into a HTML div in its current order. The number of animals that will be generated is controlled by the ANIMAL_COUNT constant.
+
+
+Your task is to open the html file and implement the code required to make each of the functions perform the task mentioned in the comments above the function.
+
+There are several helper functions that you can use to help complete the task.
+
+If you're not too familiar with JavaScript, note that you can instantiate a RankedZoo object and add it to the zoos array with the following code: zoos.push(RankedZoo(name, totalAnimalCost, averageAnimalCost, numberOfAnimals))
+
+A couple of notes:
+
+      Please only modify or add to the code below "YOUR SECTION BEGINS HERE". If you absolutely need to modify something above that, please clearly state why in the comments.
+      The number of animals is set to 500 in the html file being sent, however it would be good if the functions scaled well for bigger animal counts.
+      It's perfectly acceptable to use native JavaScript functions for things like sorting.
+
+We are not just interested in your JavaScript and CSS skills specifically, but also in your overall programming ability, so feel free to email me if you have any questions in regards to the way the page works, or just general queries.
+
+If you could send us your modified html before close of business next Wednesday(Dec 16th) that would be great.
