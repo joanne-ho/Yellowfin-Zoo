@@ -208,12 +208,13 @@
     function leastCommonZoo() {
         var result = "";
         var zooArray = [];
-        var minSoFar = 1;
-        var currentFreq = 1;
-        var i = 1;
+        
         for (let i=0; i<ANIMAL_COUNT; i++)
             zooArray.push(animals[i].zoo);
         zooArray.sort(); //sort the zoos by alphabetical order
+        var minSoFar = 1;
+        var currentFreq = 1;
+        var i = 1;
         while (zooArray[i]==zooArray[0]){ //determine the frequency of the zoo in the first row
             minSoFar++; //initialise the minimum value to be the frequency of this zoo
             i++;
