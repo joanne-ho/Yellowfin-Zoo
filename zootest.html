@@ -50,7 +50,7 @@
 <body onload="setupZoo()">
 <script type="text/javascript">
 
-    const ANIMAL_COUNT = 20;
+    const ANIMAL_COUNT = 40;
     let animals = [];
     
     function setupZoo() {
@@ -185,75 +185,78 @@
     
     // Display the most common Animal type across all the zoos and highlight the rows where the most common animal name appears
     function mostCommonAnimal() {
-        var text = "";
-        var mostFreq = 1;
-        var currentFreq = 0;
+        var result = "";
+        var mostFreq = 1; //the most highest type frequency so far
+        var currentFreq = 0; //the frequency of the current animal type
         for (let i=0; i<ANIMAL_COUNT; i++){
             for (let j=i; j<ANIMAL_COUNT; j++){
-                if (animals[i].type == animals[j].type)
-                    currentFreq++;
+                if (animals[i].type == animals[j].type) //checking if the animal types of two rows are the same
+                    currentFreq++; //if same type, increase the current frequency by one
                 if (currentFreq > mostFreq){
-                    mostFreq=currentFreq;
-                    text = animals[i].type;
+                    mostFreq=currentFreq; //update the most frequent value
+                    result = animals[i].type; 
                 }
             }
             currentFreq=0; 
         }
         //document.getElementById("display").innerHTML = text;
-        display("Most common animal is " + text);
+        display("Most common animal is " + result);
         highlight();
     }
     
     // Display the least common Zoo name and highlight the rows where the least common Zoo name appears
     function leastCommonZoo() {
-        var text = "";
-        var leastFreq = 0;
-        var currentFreq = 0;
-        for (let i=0; i<ANIMAL_COUNT; i++){
-            if (animals[i].zoo == animals[0].zoo)
-                currentFreq++;
+        var result = "";
+        var zooArray = [];
+        var minSoFar = 1;
+        var currentFreq = 1;
+        var i = 1;
+        for (let i=0; i<ANIMAL_COUNT; i++)
+            zooArray.push(animals[i].zoo);
+        zooArray.sort(); //sort the zoos by alphabetical order
+        while (zooArray[i]==zooArray[0]){ //determine the frequency of the zoo in the first row
+            minSoFar++; //initialise the minimum value to be the frequency of this zoo
+            i++;
         }
-        leastFreq = currentFreq;
-
-        for (let i=1; i<ANIMAL_COUNT; i++){
-            for (let j=i; j<ANIMAL_COUNT; j++){
-                if (animals[i].zoo == animals[j].zoo)
-                    currentFreq++;
+        for (let j=i; j<zooArray.length-1; j++){ //loop through the other zoos
+            if (zooArray[j]==zooArray[j+1]){
+                currentFreq++; //increase frequency if there is a match
             }
-            if (currentFreq < leastFreq){
-                leastFreq = currentFreq;
-                text = animals[i].zoo;
+            else{
+                if (currentFreq<=minSoFar){
+                    minSoFar=currentFreq;
+                    result=zooArray[j]
+                }
+                currentFreq=1;
             }
-            currentFreq = 0;
         }
+            
       
-        display("Least common Zoo is " + text);
+        display("Least common Zoo is " + result + " with a frequency of " + minSoFar);
         highlight();
     }
 
     // Display the animal type that costs the most along with the cost of the animal (if there are multiple just display one of them) 
     // and highlight the row of this animal in the results div
     function mostExpensiveAnimal() {
-        var text = "";
+        var result = "";
         var highestCost = 0;
         for (let i=0; i<ANIMAL_COUNT; i++){
             if (animals[i].cost > highestCost){
                 highestCost = animals[i].cost;
-                text = animals[i].type;
+                result = animals[i].type;
             }
         }
-        display("Most expensive animal is " + text + ". Its cost is $" + highestCost + ".");
+        display("Most expensive animal is " + result + ". Its cost is $" + highestCost + ".");
         highlight();
     }
 
     // Use the RankedZoo object to display a list of zoos sorted by the by the total cost of all the animals in that zoo
     // Highlight all the rows where the zoo is the one with the highest cost
+    
     function displayListOfRankedZoosSortedByTotalCost() {
         let zoos = [];
-        // my code begins here
-        display(rankedZoos.length);
-        // my code ends here
-        //displayRankedZoos(zoos);
+        displayRankedZoos(zoos);
         highlight();
     }
 
