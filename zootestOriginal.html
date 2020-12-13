@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome to the Zoo</title>
+    <style type="text/css">
+        .header {
+            width: 100%;
+            text-align: center;
+        }
+        .container {
+            max-width: 1300px;
+            margin: 0 auto 0 auto;
+        }
+        .section {
+            clear: both;
+            padding: 0;
+            margin: 0;
+        }
+        .col {
+            display: block;
+            float:left;
+            margin: 1% 0 1% 1.6%;
+        }
+        .col:first-child { 
+            margin-left: 0; 
+        }
+        .group:before,
+        .group:after { 
+            content:""; 
+            display:table;
+        }
+        .group:after { 
+            clear:both;
+        }
+        .span_1_of_3 { 
+            width: 32.26%; 
+        }
+        .selected {
+            background-color: #FFFFE0;
+        }
+		
+		.stickToTop {
+			position:sticky;
+			top:60px;
+		}
+
+    </style>
+</head>
+<body onload="setupZoo()">
+<script type="text/javascript">
+
+    const ANIMAL_COUNT = 500;
+    let animals = [];
+    
+    function setupZoo() {
+        createAnimals();
+        displayResults();
+    }
+    
+    function getRandomInt(maxVal) {
+        return Math.floor(Math.random() * (maxVal + 1));
+    }
+    
+    function Animal(id, type, cost, zoo) {
+        this.id = id;
+        this.type = type;
+        this.cost = cost;
+        this.zoo = zoo;
+    }
+    
+    function RankedZoo(name, totalAnimalCost, averageAnimalCost, numberOfAnimals) {
+        this.name = name;
+        this.totalAnimalCost = totalAnimalCost;
+        this.averageAnimalCost = averageAnimalCost;
+        this.numberOfAnimals = numberOfAnimals;
+    }
+    
+    function displayResults() {
+        const results = document.getElementById("results");
+        results.innerHTML = "";
+        
+        for (let i = 0; i < ANIMAL_COUNT; i++) {
+            let animal = animals[i];
+            let resultRow = document.createElement("div");
+            resultRow.id = createAnimalId(animal.id);
+            resultRow.className = `${createClassName(animal.type)} ${createClassName(animal.zoo)}`;
+            resultRow.appendChild(document.createTextNode(`${animal.type} - ${animal.zoo} - $${animal.cost}`));
+            results.appendChild(resultRow);
+        }
+    }
+    
+    function createAnimals() {
+        const animalsTypes = [ 
+            "Red kangaroo", 
+            "Yellow-footed rock wallaby", 
+            "African wild dog", 
+            "Matamata turtle", 
+            "Alligator Snapper", 
+            "Parsons Chameleon", 
+            "Beaded lizard", 
+            "Tufted deer", 
+            "Harris Hawk", 
+            "Scarlet ibis" 
+        ];
+        
+        const zoos = [ 
+            "Hunter Valley Zoo", 
+            "Koala Park Sanctuary", 
+            "Crocodylus Park", 
+            "Cooberrie Park", 
+            "Currumbin Wildlife Sanctuary", 
+            "Queensland Zoo", 
+            "The Wildlife Habitat Sanctuary" 
+        ];
+
+        
+        for (let i = 0; i < ANIMAL_COUNT; i++) {
+            let type = animalsTypes[getRandomInt(animalsTypes.length - 1)];
+            let zoo = zoos[getRandomInt(zoos.length - 1)];
+            let cost = getRandomInt(1000);
+            let animal = new Animal(i, type, cost, zoo);
+            animals.push(animal);
+        }
+        
+    }
+    
+    // Helper Functions - You can use these functions to help you with the requirements of the task but please don't modify them
+    
+    // Dynamically adds a css style to the header based on the selector passed into the function
+    // classes will need to be prefixed with a . and ids with a # symbol
+    function highlight(selector) {
+        if (selector === undefined) {
+            return;
+        }
+        let previousCSS = document.getElementById('currentDisplay');
+        if(previousCSS) {
+            previousCSS.remove();
+        }
+
+        let style = document.createElement('style');
+        style.innerHTML = selector + ' { background-color: #FFFFE0; }';
+        style.type = 'text/css';
+        style.id = 'currentDisplay';
+        document.getElementsByTagName('head')[0].appendChild(style);
+    }
+
+    // Returns an id text string used for the animal row
+    function createAnimalId(id) {
+        return `animal-${id}`;
+    }
+
+    // Returns a hyphenated class name for the string passed in
+    function createClassName(str) {
+        return str.split(' ').join('-').toLowerCase();
+    }
+
+    // Displays text in the div with the id of display
+    function display(text) {
+        document.getElementById('display').innerHTML = text;
+    }
+
+    // Displays a array of RankedZoo objects in the div with the id of display
+    function displayRankedZoos(rankedZoos) {
+        if (!(rankedZoos instanceof Array)) {
+            throw new Error('Requires rankedZoos to be an array')
+        }
+        let displayElement = document.getElementById('display');
+        displayElement.innerHTML = '';
+        
+        for (let i = 0; i < rankedZoos.length; i++) {
+            let rankedZoo = rankedZoos[i];
+            let displayDiv = document.createElement("div");
+            displayDiv.appendChild(document.createTextNode(`${rankedZoo.name} -  ${rankedZoo.numberOfAnimals} -  $${rankedZoo.totalAnimalCost} - $${rankedZoo.averageAnimalCost}`));
+            displayElement.appendChild(displayDiv);
+        }
+    }
+
+    // Your task is to implement the code needed to perform the functions below to display and/or highlight the values.
+    // You don't have to get the data from the DOM; you can use the animals objects in the animals array.
+    // Please add your code below. You can add extra methods or variable below this line but please don't modify anything above this line.
+    
+    // ------ YOUR SECTION BEGINS HERE ---------
+    
+    
+    // Display the most common Animal type across all the zoos and highlight the rows where the most common animal name appears
+    function mostCommonAnimal() {
+        display("Most common animal is ");
+        highlight();
+    }
+    
+    // Display the least common Zoo name and highlight the rows where the least common Zoo name appears
+    function leastCommonZoo() {
+        display("Least common Zoo is ");
+        highlight();
+    }
+
+    // Display the animal type that costs the most along with the cost of the animal (if there are multiple just display one of them) 
+    // and highlight the row of this animal in the results div
+    function mostExpensiveAnimal() {
+        display("Most expensive animal is ");
+        highlight();
+    }
+
+    // Use the RankedZoo object to display a list of zoos sorted by the by the total cost of all the animals in that zoo
+    // Highlight all the rows where the zoo is the one with the highest cost
+    function displayListOfRankedZoosSortedByTotalCost() {
+        let zoos = [];
+        displayRankedZoos(zoos);
+        highlight();
+    }
+
+    // Use the RankedZoo object to display a list of Zoos sorted by the by the average cost of all the animals in that Zoo
+    // Highlight all the rows where the zoo is the one with the highest average cost
+    function displayListOfRankedZoosSortedByAverageAnimalCost() {
+        let zoos = [];
+        displayRankedZoos(zoos);
+        highlight();
+    }
+
+    // Use the RankedZoo object to display a list of zoos sorted by the by the number of animals in that zoo
+    // Highlight all the rows where the zoo is the one with the highest number of animals
+    function displayListOfRankedZoosSortedByNumberOfAnimals() {
+        let zoos = [];
+        displayRankedZoos(zoos);
+        highlight();
+    }
+    
+
+</script>
+<div class="header"><h1>Yellowfin Zoo Manifest</h1></div>
+<div class="container">
+    <div class="section group">
+        <div class="col span_1_of_3 stickToTop">
+            <a href="#" onclick="mostCommonAnimal(); return false;">Display most common animal</a><br />
+            <a href="#" onclick="leastCommonZoo(); return false;">Display least common zoo</a><br />
+            <a href="#" onclick="mostExpensiveAnimal(); return false;">Display most expensive animal</a><br />
+            <a href="#" onclick="displayListOfRankedZoosSortedByTotalCost(); return false;">Zoos sorted by the total cost of animals</a><br />
+            <a href="#" onclick="displayListOfRankedZoosSortedByAverageAnimalCost(); return false;">Zoos sorted by average animal cost</a><br />
+            <a href="#" onclick="displayListOfRankedZoosSortedByNumberOfAnimals(); return false;">Zoos sorted by number of animals</a><br />
+            <a href="#">Return to top</a>       
+	   </div>
+        <div class="col span_1_of_3">
+            <div id='results'></div>
+        </div>
+        <div class="col span_1_of_3 stickToTop">
+            <div id='display'></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
